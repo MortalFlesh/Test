@@ -26,6 +26,7 @@ namespace InterviewTest
             customer.AddDiscount(OrderCategory.Hardware, new PercentDiscount(10));
             customer.AddDiscount(OrderCategory.Hardware, new FixedDiscount(15));
             customer.AddDiscount(OrderCategory.Software, new PercentDiscount(20));
+			customer.AddDiscount(OrderCategory.Services, new BonusDiscount());
 
             var hardwareTotal = customer.GetTotalPriceByOrderCategory(OrderCategory.Hardware);
             var hardwareTotalWithDiscount = customer.GetTotalPriceWithDiscountByOrderCategory(OrderCategory.Hardware);
@@ -36,8 +37,8 @@ namespace InterviewTest
             Console.WriteLine("Expected hardware total: {0}, actual {1}", 220 + 30 + 45, hardwareTotal);
             Console.WriteLine("Expected hardware total with discount: {0}, actual {1}", (220 + 30 + 45 - 15) * (100 - 10) / 100, hardwareTotalWithDiscount);
 			Console.WriteLine("Expected software total with discount: {0}, actual {1}", (90 + 1200) * (100 - 20) / 100, softwareTotalWithDiscount);
-			Console.WriteLine("Expected services total with discount: {0}, actual {1}", (25 + 60), servicesTotalWithDiscount);
-            Console.WriteLine("Expected total with discount: {0}, actual {1}", (220 + 30 + 45 - 15) * (100 - 10) / 100 + (90 + 1200) * (100 - 20) / 100 + 25 + 60, total);
+			Console.WriteLine("Expected services total with discount: {0}, actual {1}", (25 + 60 - 10), servicesTotalWithDiscount);
+            Console.WriteLine("Expected total with discount: {0}, actual {1}", (220 + 30 + 45 - 15) * (100 - 10) / 100 + (90 + 1200) * (100 - 20) / 100 + 25 + 60 - 10, total);
 
             Console.ReadKey();
 
