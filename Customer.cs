@@ -7,9 +7,8 @@ namespace InterviewTest
     public class Customer
     {
 	    private readonly string _name;
-	    private readonly List<Order> _orders = new List<Order>();
 		private readonly Dictionary<OrderCategory, List<Order>> _ordersByCategory = new Dictionary<OrderCategory, List<Order>>();
-	    private readonly Dictionary<OrderCategory, List<Discount>> _categoryDiscounts = new Dictionary<OrderCategory, List<Discount>>();
+	    private readonly Dictionary<OrderCategory, List<Discount>> _discountsByCategory = new Dictionary<OrderCategory, List<Discount>>();
 
         public Customer(string name)
         {
@@ -31,12 +30,12 @@ namespace InterviewTest
 
 	    public void AddDiscount(OrderCategory orderCategory, Discount discount)
 	    {
-		    if (!_categoryDiscounts.ContainsKey(orderCategory))
+		    if (!_discountsByCategory.ContainsKey(orderCategory))
 		    {
-			    _categoryDiscounts[orderCategory] = new List<Discount>();
+			    _discountsByCategory[orderCategory] = new List<Discount>();
 		    }
 			
-			_categoryDiscounts[orderCategory].Add(discount);
+			_discountsByCategory[orderCategory].Add(discount);
 	    }
 
 	    public decimal GetTotalPriceByOrderCategory(OrderCategory orderCategory)
@@ -47,7 +46,7 @@ namespace InterviewTest
 	    public decimal GetTotalPriceWithDiscountByOrderCategory(OrderCategory orderCategory)
 	    {
 		    var total = GetTotalPriceByOrderCategory(orderCategory);
-		    var discountListsByCategory = _categoryDiscounts.Where(pair => pair.Key == orderCategory).Select(pair => pair.Value);
+		    var discountListsByCategory = _discountsByCategory.Where(pair => pair.Key == orderCategory).Select(pair => pair.Value);
 
 			foreach (var discountList in discountListsByCategory)
 		    {
@@ -62,7 +61,7 @@ namespace InterviewTest
 
 	    public decimal GetTotalPriceWithDiscount()
 	    {
-		    return _ordersByCategory.Keys.Sum(orderCategory => GetTotalPriceByOrderCategory(orderCategory));
+			return _ordersByCategory.Keys.Sum(orderCategory => GetTotalPriceWithDiscountByOrderCategory(orderCategory));
 	    }
     }
 }
